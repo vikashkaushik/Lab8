@@ -1,8 +1,8 @@
 /*
  * Project Lab8
- * Description:
- * Author:
- * Date:
+ * Description: Using proximity sensor it can light up the designated color LED, and use oled display based on the button pressed.
+ * Author: Vikash Kaushik
+ * Date: 7/4/21
  */
 SYSTEM_THREAD(ENABLED);
 #include <Wire.h>
@@ -13,7 +13,8 @@ VCNL4040 proximitySensor;
 // setup() runs once, when the device is first turned on.
 void setup() {
   // Put initialization like pinMode and begin functions here.
-  pinMode(D7,OUTPUT);
+  // sets all the leds as outputs
+  pinMode(D7,OUTPUT); 
   pinMode(D6,OUTPUT);
   pinMode(D5,OUTPUT);
   display.display();  // cause the display to be updated
@@ -37,6 +38,7 @@ void loop() {
   
   unsigned int proxValue = proximitySensor.getProximity(); 
   Serial.println(proxValue);
+  // blue far	
   if(proxValue <= (10))
   {
     digitalWrite(D7, HIGH);
@@ -44,6 +46,7 @@ void loop() {
     digitalWrite(D5, LOW);
     
   }
+   // orange kinda close	
   if(proxValue > (11) && proxValue<1000)
   {
     
@@ -51,6 +54,7 @@ void loop() {
     digitalWrite(D5, LOW);
     digitalWrite(D7, LOW);
   }
+  //green very close	
   if(proxValue >= (1000) && proxValue>5000)
   {
     
@@ -59,7 +63,7 @@ void loop() {
     digitalWrite(D7, LOW);
   }
  
-
+  // pressing a displays proximity value
   if (display.pressedA()) {
 		display.clearDisplay();
     display.print("Proximity Value: ");
@@ -67,6 +71,7 @@ void loop() {
     Serial.println();
     display.display(); 
   }
+  // pressing b displays you the ambient light level	
   if (display.pressedB()) {
     display.clearDisplay();
 		unsigned int ambientValue = proximitySensor.getAmbient(); 
@@ -75,6 +80,7 @@ void loop() {
     display.println(ambientValue);
     display.display(); 
   }
+  // pressing c displays the i2C address
   if (display.pressedC()) {
     display.clearDisplay();
 		unsigned int i2CValue = proximitySensor.getID(); 
